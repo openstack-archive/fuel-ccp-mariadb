@@ -1,19 +1,12 @@
-{
-    "kind": "Service",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "openstack-mysql"
-    },
-    "spec": {
-        "selector": {
-          "app": "mariadb"
-        },
-        "ports": [
-            {
-                "protocol": "TCP",
-                "port": 3306,
-                "targetPort": 3306
-            }
-        ]
-    }
-}
+kind: "Service"
+apiVersion: "v1"
+metadata:
+  name: "openstack-mysql"
+spec:
+  selector:
+    app: "mariadb"
+  ports:
+    -
+      protocol: "TCP"
+      port: 3306
+      targetPort: 3306
