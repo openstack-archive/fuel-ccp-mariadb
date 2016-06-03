@@ -9,9 +9,6 @@ RUN apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/mysql/*
 
-# delme in future
-COPY my.cnf /etc/mysql/my.cnf
-
 COPY mariadb_sudoers /etc/sudoers.d/mariadb_sudoers
 COPY bootstrap.sh /usr/local/bin/bootstrap.sh
 COPY security_reset.expect /usr/local/bin/mysql_security_reset
@@ -20,9 +17,3 @@ RUN chmod 755 /usr/local/bin/bootstrap.sh \
     && chmod 750 /etc/sudoers.d \
     && chmod 440 /etc/sudoers.d/mariadb_sudoers \
     && usermod -a -G microservices mysql
-
-### delme in future
-ENV DB_ROOT_PASSWORD "password"
-
-USER mysql
-CMD ["bootstrap.sh"]

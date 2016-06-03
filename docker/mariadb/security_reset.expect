@@ -1,5 +1,7 @@
 #!/usr/bin/expect -f
 
+set passwd [lindex $argv 0]
+
 set timeout 10
 spawn mysql_secure_installation
 expect {
@@ -19,14 +21,14 @@ expect {
   eof { send_user "\nFailed to get 'New password:' prompt\n"; exit 1 }
   "New password:"
 }
-send "$env(DB_ROOT_PASSWORD)\r"
+send "$passwd\r"
 
 expect {
   timeout { send_user "\nFailed to get 'Re-enter new password:' prompt\n"; exit 1 }
   eof { send_user "\nFailed to get 'Re-enter new password:' prompt\n"; exit 1 }
   "Re-enter new password:"
 }
-send "$env(DB_ROOT_PASSWORD)\r"
+send "$passwd\r"
 
 expect {
   timeout { send_user "\nFailed to get 'Remove anonymous users?' prompt\n"; exit 1 }

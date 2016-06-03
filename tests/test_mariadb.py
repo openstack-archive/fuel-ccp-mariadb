@@ -36,8 +36,7 @@ def test_mysql_is_running():
 
 
 def test_mysql_is_accessible(cli, container):
-    cmd = ("bash -c 'mysql -Ns -h127.0.0.1 -uroot -p$DB_ROOT_PASSWORD"
-           " -e \"SHOW DATABASES\"'")
+    cmd = ("bash -c 'mysql -Ns -h127.0.0.1 -uroot -e \"SHOW DATABASES\"'")
     res = cli.exec_create(container['Id'], cmd)
     out = cli.exec_start(res)
     assert cli.exec_inspect(res)['ExitCode'] == 0

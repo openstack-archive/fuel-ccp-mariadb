@@ -64,3 +64,5 @@ vagrant/vagrantkey*
 
 # generated openrc
 openrc
+
+tests/.cache*

@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+test -f /tmp/mariadb_ok && nc -z localhost {{ mariadb_port }}

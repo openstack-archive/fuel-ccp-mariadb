@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 function bootstrap_db {
     mysqld_safe --wsrep-new-cluster &
@@ -13,13 +13,15 @@ function bootstrap_db {
         fi
     done
     echo "mysql_security_reset"
-    sudo -E mysql_security_reset
-    echo "PASSWORD: $DB_ROOT_PASSWORD"
+    sudo -E mysql_security_reset ${DB_ROOT_PASSWORD}
     mysql -u root --password="${DB_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}' WITH GRANT OPTION;"
     mysql -u root --password="${DB_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${DB_ROOT_PASSWORD}' WITH GRANT OPTION;"
-    echo "SHUTDOWN"
     mysqladmin -uroot -p"${DB_ROOT_PASSWORD}" shutdown
+    wait $(jobs -p)
 }
+
+DB_ROOT_PASSWORD="$1"
+DB_MAX_TIMEOUT="$2"
 
 # Only update permissions if permissions need to be updated
 if [[ $(stat -c %U:%G /var/lib/mysql) != "mysql:mysql" ]]; then
@@ -29,6 +31,4 @@ fi
 # Bootstrap
 mysql_install_db
 bootstrap_db
-
-# Run daemon
-mysqld
+touch /tmp/mariadb_ok

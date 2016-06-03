@@ -1,0 +1,4 @@
+docker-py
+docker-compose
+requests==2.7.0  # dirty hack for CI
+pytest

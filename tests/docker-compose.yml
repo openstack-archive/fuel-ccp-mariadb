@@ -1,6 +1,5 @@
 mariadb:
-    image: mcp/mariadb
-    environment:
-        DB_ROOT_PASSWORD: r00tme
+    image: mariadbbuild/mariadb:latest
     ports:
       - 33306:3306
+    command: "bootstrap.sh r00tme 60 && mysqld"

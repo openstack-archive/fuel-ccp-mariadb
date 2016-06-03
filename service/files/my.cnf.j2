@@ -1,6 +1,6 @@
 [mysqld]
-#bind-address={{ mariadb_addr }}
-#port={{ mariadb_port }}
+bind-address = {{ mariadb_addr }}
+port = {{ mariadb_port }}
 
 datadir=/var/lib/mysql/
 log-error=/var/log/mysql.log
