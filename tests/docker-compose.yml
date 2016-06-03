@@ -1,0 +1,6 @@
+mariadb:
+    image: mcp/mariadb
+    environment:
+        DB_ROOT_PASSWORD: r00tme
+    ports:
+      - 33306:3306
