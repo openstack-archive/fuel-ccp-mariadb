@@ -1,18 +1,20 @@
 service:
-    name: mariadb
-    ports:
-        - mariadb_port
-    container:
-        node-selector:
-            openstack-controller: "true"
-    probes:
+  name: mariadb
+  node-selector:
+    openstack-controller: "true"
+  ports:
+    - mariadb_port
+  containers:
+    - name: mariadb
+      image: mariadb
+      probes:
         readiness: mariadb-readiness.sh
         liveness: "true"
-    pre:
+      pre:
         - name: mariadb-bootstrap
           command: bootstrap.sh {{ db_root_password }} {{ db_max_timeout }}
           user: mysql
-    daemon:
+      daemon:
         command: mysqld
         files:
             - mariadb-my-cnf
@@ -20,10 +22,10 @@ service:
         user: mysql
 
 files:
-    mariadb-my-cnf:
-        path: /etc/mysql/my.cnf
-        content: my.cnf.j2
-    mariadb-readiness:
-        path: /usr/local/bin/mariadb-readiness.sh
-        content: readiness.sh.j2
-        perm: "755"
+  mariadb-my-cnf:
+    path: /etc/mysql/my.cnf
+    content: my.cnf.j2
+  mariadb-readiness:
+    path: /usr/local/bin/mariadb-readiness.sh
+    content: readiness.sh.j2
+    perm: "755"
