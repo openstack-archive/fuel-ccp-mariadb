@@ -2,6 +2,9 @@ service:
     name: mariadb
     ports:
         - mariadb_port
+    container:
+        node-selector:
+            openstack-controller: "true"
     probes:
         readiness: mariadb-readiness.sh
         liveness: "true"
