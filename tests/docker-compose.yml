@@ -1,5 +1,0 @@
-mariadb:
-    image: mariadbbuild/mariadb:latest
-    ports:
-      - 33306:3306
-    command: "bootstrap.sh r00tme 60 && mysqld"
