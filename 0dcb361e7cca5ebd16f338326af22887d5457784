@@ -1,0 +1,10 @@
+Code-Review+2: Proskurin Kirill <kproskurin@mirantis.com>
+Code-Review+1: Andrey Pavlov <apavlov@mirantis.com>
+Code-Review+2: Sergey Reshetnyak <sreshetniak@mirantis.com>
+Workflow+1: Sergey Reshetnyak <sreshetniak@mirantis.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 07 Jul 2016 08:36:37 +0000
+Reviewed-on: https://review.openstack.org/338294
+Project: openstack/fuel-ccp-mariadb
+Branch: refs/heads/master
