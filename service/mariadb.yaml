@@ -12,20 +12,28 @@ service:
         liveness: "true"
       pre:
         - name: mariadb-bootstrap
-          command: bootstrap.sh {{ db_root_password }} {{ db_max_timeout }}
-          user: mysql
+          command: /opt/ccp/bin/mariadb-bootstrap.sh
       daemon:
         command: mysqld
         files:
             - mariadb-my-cnf
             - mariadb-readiness
-        user: mysql
+            - mariadb-bootstrap
+            - mariadb-security-reset.expect
 
 files:
   mariadb-my-cnf:
     path: /etc/mysql/my.cnf
     content: my.cnf.j2
   mariadb-readiness:
-    path: /usr/local/bin/mariadb-readiness.sh
+    path: /opt/ccp/bin/mariadb-readiness.sh
     content: readiness.sh.j2
+    perm: "755"
+  mariadb-bootstrap:
+    path: /opt/ccp/bin/mariadb-bootstrap.sh
+    content: mariadb-bootstrap.sh.j2
+    perm: "755"
+  mariadb-security-reset.expect:
+    path: /opt/ccp/bin/mariadb-security-reset.expect
+    content: mariadb-security-reset.expect
     perm: "755"
