@@ -1,1 +1,1 @@
-%microservices ALL=(root) NOPASSWD: /bin/chown mysql\: /var/lib/mysql, /usr/bin/chown mysql\: /var/lib/mysql, /usr/local/bin/mysql_security_reset
+%microservices ALL=(root) NOPASSWD: /bin/chown mysql\: /var/lib/mysql, /usr/bin/chown mysql\: /var/lib/mysql, /opt/ccp/bin/mariadb-security-reset.expect
