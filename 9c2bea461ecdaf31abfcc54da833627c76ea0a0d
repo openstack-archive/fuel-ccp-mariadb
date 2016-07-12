@@ -1,0 +1,9 @@
+Code-Review+2: Sergey Reshetnyak <sreshetniak@mirantis.com>
+Code-Review+2: Eric Lemoine <elemoine@mirantis.com>
+Workflow+1: Eric Lemoine <elemoine@mirantis.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 12 Jul 2016 13:08:34 +0000
+Reviewed-on: https://review.openstack.org/338788
+Project: openstack/fuel-ccp-mariadb
+Branch: refs/heads/master
