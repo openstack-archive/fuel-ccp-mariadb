@@ -10,7 +10,14 @@ service:
       probes:
         readiness: /opt/ccp/bin/mariadb-readiness.sh
         liveness: "true"
+      volumes:
+      - name: mysql-logs
+        path: /var/log/ccp/mysql
+        type: host
+        readOnly: False
       pre:
+        - name: chown-logs-dir
+          command: sudo /bin/chown mysql:mysql /var/log/ccp/mysql
         - name: mariadb-bootstrap
           command: /opt/ccp/bin/mariadb-bootstrap.sh
       daemon:
@@ -20,7 +27,6 @@ service:
             - mariadb-readiness
             - mariadb-bootstrap
             - mariadb-security-reset.expect
-
 files:
   mariadb-my-cnf:
     path: /etc/mysql/my.cnf
