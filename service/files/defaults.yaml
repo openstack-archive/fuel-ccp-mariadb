@@ -1,5 +1,4 @@
 configs:
     db_max_timeout: 60
     db_root_password: password
-    mariadb_addr: 0.0.0.0
     mariadb_port: 3306
