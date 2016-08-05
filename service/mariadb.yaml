@@ -10,12 +10,12 @@ service:
         liveness: "true"
       volumes:
       - name: mysql-logs
-        path: /var/log/ccp/mysql
+        path: "{{ mariadb_log_base }}"
         type: host
         readOnly: False
       pre:
         - name: chown-logs-dir
-          command: sudo /bin/chown mysql:mysql /var/log/ccp/mysql
+          command: "sudo /bin/chown mysql:mysql {{ mariadb_log_base }}"
         - name: mariadb-bootstrap
           command: /opt/ccp/bin/mariadb-bootstrap.sh
       daemon:

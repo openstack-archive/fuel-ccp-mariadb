@@ -2,3 +2,4 @@ configs:
     db_max_timeout: 60
     db_root_password: password
     mariadb_port: 3306
+    mariadb_log_base: /var/log/ccp/mysql
