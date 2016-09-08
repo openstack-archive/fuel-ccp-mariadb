@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+RAW="--raw --batch -s"
+COM="select count(*) from mysql_servers;"
+AUTH="-umonitor -p{{ percona.monitor_password }}"
+ADDRESS="-hlocalhost -P{{ percona.port }}"
+OPTS="$RAW $AUTH $ADDRESS"
+STATUS=$(mysql $OPTS -e "show status like 'wsrep_ready';" | awk {'print $2'})
+
+if [ "$STATUS" = "ON" ];
+then
+        exit 0
+else
+        exit 1
+fi
