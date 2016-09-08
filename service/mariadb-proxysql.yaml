@@ -1,0 +1,19 @@
+service:
+  name: proxysql
+  ports:
+    - mariadb_port
+  containers:
+    - name: proxysql
+      image: proxysql
+      probes:
+        readiness: "true"
+        liveness: "true"
+      daemon:
+        files:
+          - proxysql
+        command: /opt/proxysql/src/proxysql --initial -f -c /etc/proxysql.cnf
+
+files:
+  proxysql:
+    path: /etc/proxysql.cnf
+    content: proxysql.cnf.j2

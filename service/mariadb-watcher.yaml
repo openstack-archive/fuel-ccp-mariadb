@@ -1,22 +1,13 @@
 service:
-  name: percona
-  ports:
-    - percona_port
+  name: proxysql
   containers:
-    - name: percona
-      image: percona
+    - name: watcher
+      image: watcher
       probes:
         readiness: "true"
         liveness: "true"
-      volumes:
-      - name: mysql-logs
-        path: "/var/log/ccp/mysql"
-        type: host
-        readOnly: False
       daemon:
-        files:
-          - entrypoint
-        command: entrypoint
+        command: /usr/bin/watch_changes -prefix /pxc-cluster/{{ cluster_name }} -proxy_user {{ mysql-proxy-user }} -proxy_pass {{ mysql-proxy-password }} -proxy_address "pxc-service" -root_pass {{ mysql-root-password }} -etcd_service {{ discovery-service }}
       env:
          - name: MYSQL_ROOT_PASSWORD
            valueFrom:
@@ -38,10 +29,4 @@ service:
              configMapKeyRef:
                name: percona
                key: xtrabackup-password
-
-files:
-  entrypoint:
-    path: /entrypoint.sh
-    content: percona_entrypoint.sh.j2
-
 

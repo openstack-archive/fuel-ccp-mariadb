@@ -1,18 +1,18 @@
-FROM {{ namespace }}/base-tools:{{ tag }}
+FROM {{ namespace }}/base:{{ tag }}
 MAINTAINER {{ maintainer }}
 
-RUN apt-get install -y --no-install-recommends \
-        mariadb-server-10.1 \
-        percona-xtrabackup \
-        socat \
-        expect \
-    && apt-get clean \
-    && rm -rf /var/lib/mysql/*
+ENV DEBIAN_FRONTEND noninteractive
 
-COPY mariadb_sudoers /etc/sudoers.d/mariadb_sudoers
-RUN chmod 750 /etc/sudoers.d \
-    && chmod 440 /etc/sudoers.d/mariadb_sudoers \
-    && usermod -a -G microservices mysql \
-    && chown -R mysql: /etc/mysql /var/lib/mysql
+COPY jq /usr/bin/jq
+COPY clustercheckcron /usr/bin/clustercheckcron
+COPY percona_sources.list /etc/apt/sources.list.d/
 
-USER mysql
+RUN apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends percona-xtradb-cluster-57
+
+ADD node.cnf /etc/my.cnf
+VOLUME /var/lib/mysql
+
+RUN chmod a+x /usr/bin/jq
+RUN chmod a+x /usr/bin/clustercheckcron
