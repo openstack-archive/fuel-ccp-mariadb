@@ -1,6 +1,9 @@
 FROM {{ namespace }}/base-tools:{{ tag }}
 MAINTAINER {{ maintainer }}
 
+COPY sources.list.debian /etc/apt/sources.list
+COPY apt_preferences.debian /etc/apt/preferences
+RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
 RUN apt-get install -y --no-install-recommends \
         mariadb-server-10.1 \
         percona-xtrabackup \
