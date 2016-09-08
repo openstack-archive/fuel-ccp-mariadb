@@ -1,0 +1,7 @@
+FROM {{ namespace }}/base-tools:{{ tag }}
+MAINTAINER {{ maintainer }}
+
+RUN curl -OL https://github.com/sysown/proxysql/releases/download/v{{ proxysql_version }}/proxysql_{{ proxysql_version }}-debian8_amd64.deb
+RUN dpkg -i proxysql_{{ proxysql_version }}-debian8_amd64.deb
+
+VOLUME /var/lib/proxysql
