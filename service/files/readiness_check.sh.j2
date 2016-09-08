@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+RAW="--raw --batch -s"
+COM="select count(*) from mysql_servers;"
+AUTH="-u{{ proxysql_admin_user }} -p{{ proxysql_admin_pass }}"
+ADDRESS="-h127.0.0.1 -P{{ proxysql_port }}"
+OPTS="$RAW $AUTH $ADDRESS"
+COUNT=$(mysql $OPTS -e "select count(*) from mysql_servers where status='ONLINE';")
+
+if [ "$COUNT" -gt "1" ];
+then
+        exit 0
+else
+        exit 1
+fi
