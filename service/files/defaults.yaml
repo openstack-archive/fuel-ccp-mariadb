@@ -1,7 +1,12 @@
 configs:
   db:
+    root_password: "JdUDnZyTsL"
     max_timeout: 60
     root_password: password
-  mariadb:
+  percona:
+    discovery_service: "etcd:2379"
+    cluster_name: "k8scluster"
+    xtrabackup_password: "p9jwtcv3WX"
+    monitor_password: "Fu33PNsoHr"
     port:
       cont: 3306
