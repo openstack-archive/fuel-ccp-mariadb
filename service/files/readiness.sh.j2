@@ -1,3 +1,0 @@
-#!/bin/bash -e
-
-test -f /tmp/mariadb_ok && nc -z {{ network_topology["private"]["address"] }} {{ mariadb_port }}

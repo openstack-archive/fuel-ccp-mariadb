@@ -1,0 +1,11 @@
+service:
+  name: watcher
+  containers:
+    - name: watcher
+      image: mariadb-watcher
+      probes:
+        readiness: "true"
+        liveness: "true"
+      daemon:
+        command: /usr/bin/watch_changes -prefix /pxc-cluster/{{ cluster_name }} -proxy_user {{ mysql_proxy_user }} -proxy_pass {{ mysql_proxy_password }} -proxy_address "pxc-service" -root_pass {{ mysql_root_password }} -etcd_service {{ discovery_service }}
+
