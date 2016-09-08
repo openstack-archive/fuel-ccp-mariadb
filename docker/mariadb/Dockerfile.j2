@@ -3,19 +3,13 @@ MAINTAINER {{ maintainer }}
 
 COPY {{ render('sources.list.debian.j2') }} /etc/apt/sources.list.d/mariadb.list
 COPY {{ render('apt_preferences.debian.j2') }} /etc/apt/preferences
-RUN apt-key adv --recv-keys --keyserver {{ url.mariadb.debian.keyserver }} \
-    {{ url.mariadb.debian.keyid }}
-RUN apt-get update && \
-       apt-get install -y --no-install-recommends \
-        mariadb-server-10.1 \
-        percona-xtrabackup \
-        socat \
-        expect \
-    && apt-get clean \
-    && rm -rf /var/lib/mysql/*
-
 COPY mariadb_sudoers /etc/sudoers.d/mariadb_sudoers
-RUN chmod 750 /etc/sudoers.d \
+
+RUN apt-key adv --recv-keys --keyserver {{ url.mariadb.debian.keyserver }} \
+    {{ url.mariadb.debian.keyid }} \
+    && apt-get update \
+    && apt-get install -y --force-yes --no-install-recommends percona-xtradb-cluster-57 jq \
+    && chmod 750 /etc/sudoers.d \
     && chmod 440 /etc/sudoers.d/mariadb_sudoers \
     && usermod -a -G microservices mysql \
     && chown -R mysql: /etc/mysql /var/lib/mysql
