@@ -1,12 +1,13 @@
 service:
   name: mariadb
+  kind: DaemonSet
   ports:
-    - {{ mariadb.port }}
+    - {{ percona.port }}
   containers:
     - name: mariadb
       image: mariadb
       probes:
-        readiness: /opt/ccp/bin/mariadb-readiness.sh
+        readiness: "true"
         liveness:
           command: "true"
           type: "exec"
@@ -14,32 +15,34 @@ service:
         - name: mysql-logs
           path: "/var/log/ccp/mysql"
           type: host
-          readOnly: False
+          readOnly: false
+        - name: mysql-storage
+          path: "/var/lib/mysql"
+          type: host
+          readOnly: false
       pre:
         - name: chown-logs-dir
           command: "sudo /bin/chown mysql:mysql /var/log/ccp/mysql"
-        - name: mariadb-bootstrap
-          command: /opt/ccp/bin/mariadb-bootstrap.sh
+        - name: chown-data-dir
+          command: "sudo /bin/chown mysql:mysql /var/lib/mysql"
       daemon:
-        command: mysqld
         files:
-          - mariadb-my-cnf
-          - mariadb-readiness
-          - mariadb-bootstrap
-          - mariadb-security-reset.expect
+          - entrypoint
+          - mycnf
+          - check
+        dependencies:
+          - etcd
+        command: /opt/ccp/bin/entrypoint.sh
+
 files:
-  mariadb-my-cnf:
+  entrypoint:
+    path: /opt/ccp/bin/entrypoint.sh
+    content: percona_entrypoint.sh.j2
+    perm: "0755"
+  mycnf:
     path: /etc/mysql/my.cnf
-    content: my.cnf.j2
-  mariadb-readiness:
-    path: /opt/ccp/bin/mariadb-readiness.sh
-    content: readiness.sh.j2
-    perm: "755"
-  mariadb-bootstrap:
-    path: /opt/ccp/bin/mariadb-bootstrap.sh
-    content: mariadb-bootstrap.sh.j2
-    perm: "755"
-  mariadb-security-reset.expect:
-    path: /opt/ccp/bin/mariadb-security-reset.expect
-    content: mariadb-security-reset.expect
-    perm: "755"
+    content: node.cnf.j2
+  check:
+    path: /opt/ccp/bin/clustercheckcron
+    content: clustercheckcron.j2
+    perm: "0755"
