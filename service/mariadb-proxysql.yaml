@@ -1,0 +1,25 @@
+service:
+  name: {{ proxysql_service_name }}
+  ports:
+    - {{ percona_port }}
+    - {{ proxysql_port }}
+  containers:
+    - name: mariadb
+      image: mariadb
+      probes:
+        readiness: "true"
+        liveness: "true"
+      daemon:
+        files:
+          - proxysql
+          - readiness
+        command: /usr/bin/proxysql --initial -f -c /etc/proxysql.cnf
+
+files:
+  proxysql:
+    path: /etc/proxysql.cnf
+    content: proxysql.cnf.j2
+  readiness:
+    path: /opt/ccp/bin/proxysql-readiness.sh
+    content: readiness_check.sh.j2
+    perm: "755"

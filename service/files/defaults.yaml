@@ -1,4 +1,18 @@
 configs:
+    db_root_password: "JdUDnZyTsL"
+    discovery_service: "etcd:2379"
+    cluster_name: "k8scluster"
+    xtrabackup_password: "p9jwtcv3WX"
+    mysql_proxy_user: "proxyuser"
+    mysql_proxy_password: "XTg1o9g8aP"
     db_max_timeout: 60
-    db_root_password: password
-    mariadb_port: 3306
+    percona_port: 3306
+    proxysql_port: 6032
+    proxysql_ports: 2
+    proxysql_max_connections: 2048
+    proxysql_service_name: "mariadb"
+    proxysql_admin_user: "admin"
+    proxysql_admin_pass: "admin"
+
+versions:
+    proxysql_version: 1.2.2
