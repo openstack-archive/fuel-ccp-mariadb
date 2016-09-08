@@ -1,0 +1,17 @@
+FROM {{ namespace }}/base-tools:{{ tag }}
+MAINTAINER {{ maintainer }}
+
+ENV DEBIAN_FRONTEND noninteractive
+
+COPY jq /usr/bin/jq
+COPY percona_sources.list /etc/apt/sources.list.d/
+
+RUN apt-key adv --keyserver keys.gnupg.net --recv-keys 8507EFA5
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends percona-xtradb-cluster-57
+
+VOLUME /var/lib/mysql
+
+RUN chmod a+x /usr/bin/jq
+
+EXPOSE 3306 4567 4568
