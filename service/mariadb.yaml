@@ -1,7 +1,7 @@
 service:
   name: mariadb
   ports:
-    - mariadb_port
+    - {{ mariadb_port }}
   containers:
     - name: mariadb
       image: mariadb
