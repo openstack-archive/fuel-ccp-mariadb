@@ -5,6 +5,7 @@ port = {{ mariadb_port }}
 datadir=/var/lib/mysql/
 log-error=/var/log/ccp/mysql/mysql.log
 max_connections=10000
+skip-name-resolve
 
 log-bin=mariadb-bin
 binlog_format=ROW
