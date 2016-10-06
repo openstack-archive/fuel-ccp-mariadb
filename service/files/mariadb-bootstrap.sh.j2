@@ -23,8 +23,8 @@ function bootstrap_db {
     wait $(jobs -p)
 }
 
-DB_ROOT_PASSWORD="{{ db_root_password }}"
-DB_MAX_TIMEOUT="{{ db_max_timeout }}"
+DB_ROOT_PASSWORD="{{ db.root_password }}"
+DB_MAX_TIMEOUT="{{ db.max_timeout }}"
 
 # Only update permissions if permissions need to be updated
 if [[ $(stat -c %U:%G /var/lib/mysql) != "mysql:mysql" ]]; then
