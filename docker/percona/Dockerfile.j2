@@ -4,6 +4,7 @@ MAINTAINER {{ maintainer }}
 ENV DEBIAN_FRONTEND noninteractive
 
 COPY jq /usr/bin/jq
+COPY galera-healthcheck /usr/bin/galera-healthcheck
 COPY percona_sources.list /etc/apt/sources.list.d/
 
 RUN apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
