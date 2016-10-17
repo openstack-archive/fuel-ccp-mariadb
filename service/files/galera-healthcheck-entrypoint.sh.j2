@@ -1,0 +1,21 @@
+#!/bin/bash
+
+MONITOR_PASSWORD={{ percona.monitor_password }}
+PIDFILE=/var/run/galera-healthcheck.pid
+ipaddr=$(hostname -i | awk ' { print $1 } ')
+
+function shutdown() {
+  echo "Shutting down"
+  test -s ${PIDFILE} && kill -TERM $(cat ${PIDFILE})
+}
+trap shutdown TERM INT
+
+exec /usr/bin/galera-healthcheck -ip=${ipaddr} \
+  -port=8080 \
+  -pidfile=${PIDFILE} \
+  -user monitor \
+  -password="${MONITOR_PASSWORD}"
+
+while [ -s ${PIDFILE} ] && kill -0 $(cat ${PIDFILE}); do
+  sleep 0.5
+done

@@ -4,13 +4,28 @@ service:
   ports:
     - {{ percona.port }}
   containers:
-    - name: mariadb
-      image: mariadb
+    - name: galera-healthcheck
+      image: galera-healthcheck
       probes:
         readiness: "true"
         liveness:
           command: "true"
           type: "exec"
+      daemon:
+        files:
+          - galera-healthcheck-entrypoint
+        dependencies:
+          - etcd
+        command: /entrypoint.sh
+    - name: mariadb
+      image: mariadb
+      probes:
+        readiness: "true"
+        liveness:
+          path: "/"
+          type: "httpGet"
+          port: 8080
+          initialDelay: 240
       volumes:
         - name: mysql-logs
           path: "/var/log/ccp/mysql"
@@ -24,7 +39,6 @@ service:
         files:
           - entrypoint
           - mycnf
-          - check
         dependencies:
           - etcd
         command: bash /entrypoint.sh
@@ -36,7 +50,7 @@ files:
   mycnf:
     path: /etc/mysql/my.cnf
     content: node.cnf.j2
-  check:
-    path: /usr/bin/clustercheckcron
-    content: clustercheckcron.j2
+  galera-healthcheck-entrypoint:
+    path: /entrypoint.sh
+    content: galera-healthcheck-entrypoint.sh.j2
     perm: "0755"
