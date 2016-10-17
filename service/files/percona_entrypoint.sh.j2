@@ -67,8 +67,8 @@ if [ ! -e "$DATADIR/init.ok" ]; then
 		ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 		CREATE USER 'xtrabackup'@'localhost' IDENTIFIED BY '$XTRABACKUP_PASSWORD';
 		GRANT RELOAD,PROCESS,LOCK TABLES,REPLICATION CLIENT ON *.* TO 'xtrabackup'@'localhost';
-		GRANT REPLICATION CLIENT ON *.* TO monitor@'%' IDENTIFIED BY 'monitor';
-		GRANT PROCESS ON *.* TO monitor@localhost IDENTIFIED BY '$MONITOR_PASSWORD';
+		GRANT PROCESS,REPLICATION CLIENT ON *.* TO 'monitor'@'127.0.0.1' IDENTIFIED BY '${MONITOR_PASSWORD}';
+		GRANT PROCESS,REPLICATION CLIENT ON *.* TO 'monitor'@'localhost' IDENTIFIED BY '${MONITOR_PASSWORD}';
 		DROP DATABASE IF EXISTS test ;
 		FLUSH PRIVILEGES ;
 		EOSQL
@@ -153,13 +153,10 @@ IFS="$OLDIFS"
 cluster_join=$(join , $combined )
 echo "Joining cluster $cluster_join"
 
-
-bash /usr/bin/clustercheckcron monitor monitor 1 /var/lib/mysql/clustercheck.log 1 &
 set -e
 
 fi
 
-#--log-error=${DATADIR}error.log
-#exec mysqld --user=mysql --wsrep_cluster_name=$CLUSTER_NAME --wsrep_cluster_address="gcomm://$cluster_join" --wsrep_sst_method=xtrabackup-v2 --wsrep_sst_auth="xtrabackup:$XTRABACKUP_PASSWORD" --wsrep_node_address="$ipaddr" $CMDARG
-mysqld --user=mysql --wsrep_cluster_name=$CLUSTER_NAME --wsrep_cluster_address="gcomm://$cluster_join" --wsrep_sst_method=xtrabackup-v2 --wsrep_sst_auth="xtrabackup:$XTRABACKUP_PASSWORD" --wsrep_node_address="$ipaddr" $CMDARG --log-error="/var/log/mysqld.log"
+exec mysqld --user=mysql --wsrep_cluster_name=$CLUSTER_NAME --wsrep_cluster_address="gcomm://$cluster_join" --wsrep_sst_method=xtrabackup-v2 --wsrep_sst_auth="xtrabackup:$XTRABACKUP_PASSWORD" --wsrep_node_address="$ipaddr" $CMDARG --log-error="/var/log/mysqld.log"
 
+# vim: set ts=4 sw=4 tw=0 et :
