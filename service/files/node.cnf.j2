@@ -1,5 +1,5 @@
 [mysqld]
-bind-address = {{ network_topology["private"]["address"] }}
+bind-address = 0.0.0.0
 port = {{ percona.port }}
 
 datadir=/var/lib/mysql
