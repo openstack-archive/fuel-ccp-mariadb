@@ -7,8 +7,11 @@ service:
     - name: percona
       image: percona
       probes:
-        readiness: "/readiness_check.sh"
-        liveness: "true"
+        readiness: "true"
+        liveness:
+          path: "/"
+          type: "httpGet"
+          port: 8080
       volumes:
         - name: mysql-logs
           path: "/var/log/ccp/mysql"
@@ -22,7 +25,6 @@ service:
         files:
           - entrypoint
           - mycnf
-          - check
         dependencies:
           - etcd
         command: bash /entrypoint.sh
@@ -34,7 +36,3 @@ files:
   mycnf:
     path: /etc/mysql/my.cnf
     content: node.cnf.j2
-  check:
-    path: /readiness_check.sh
-    content: readiness_check.sh.j2
-    perm: "0755"
