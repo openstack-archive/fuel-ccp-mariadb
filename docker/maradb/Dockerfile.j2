@@ -6,9 +6,9 @@ ENV DEBIAN_FRONTEND noninteractive
 COPY jq /usr/bin/jq
 COPY percona_sources.list /etc/apt/sources.list.d/
 
-RUN apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends percona-xtradb-cluster-57
+RUN apt-key adv --keyserver keys.gnupg.net --recv-keys 8507EFA5
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends percona-xtradb-cluster-57
 
 VOLUME /var/lib/mysql
 
