@@ -3,4 +3,5 @@ configs:
     max_timeout: 60
     root_password: password
   mariadb:
-    port: 3306
+    port:
+      cont: 3306
