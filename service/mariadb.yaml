@@ -7,7 +7,9 @@ service:
       image: mariadb
       probes:
         readiness: /opt/ccp/bin/mariadb-readiness.sh
-        liveness: "true"
+        liveness:
+          command: "true"
+          type: "exec"
       volumes:
         - name: mysql-logs
           path: "/var/log/ccp/mysql"
