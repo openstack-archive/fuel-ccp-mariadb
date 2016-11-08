@@ -5,3 +5,6 @@ configs:
   mariadb:
     port:
       cont: 3306
+url:
+  mariadb_host: http://lon1.mirrors.digitalocean.com
+  mariadb_path: mariadb/repo/10.1/debian
