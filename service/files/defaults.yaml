@@ -5,3 +5,9 @@ configs:
   mariadb:
     port:
       cont: 3306
+url:
+  mariadb:
+    debian:
+      repo: http://lon1.mirrors.digitalocean.com/mariadb/repo/10.1/debian
+      keyserver: hkp://keyserver.ubuntu.com:80,
+      keyid: 0xcbcb082a1bb943db
