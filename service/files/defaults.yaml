@@ -1,4 +1,6 @@
 configs:
+  service:
+    database: mariadb
   db:
     max_timeout: 60
     root_password: password
