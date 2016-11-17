@@ -1,5 +1,5 @@
 service:
-  name: mariadb
+  name: {{ service.database }}
   ports:
     - {{ mariadb.port }}
   containers:
