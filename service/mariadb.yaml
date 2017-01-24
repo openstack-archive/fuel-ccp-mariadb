@@ -3,6 +3,12 @@ service:
   name: {{ service.database }}
   ports:
     - {{ mariadb.port }}
+  # {% if telegraf is defined %}
+  annotations:
+    service:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "{{ telegraf.prometheus_output_port.cont }}"
+  # {% endif %}
   containers:
     - name: mariadb
       image: mariadb
@@ -28,6 +34,17 @@ service:
           - mariadb-readiness
           - mariadb-bootstrap
           - mariadb-security-reset.expect
+    # {% if telegraf is defined %}
+    - name: mariadb-telegraf
+      image: telegraf
+      daemon:
+        dependencies:
+          - etcd
+        command: telegraf --config /etc/telegraf/telegraf.conf --input-filter mysql
+        files:
+          - telegraf-conf
+    # {% endif %}
+
 files:
   mariadb-my-cnf:
     path: /etc/mysql/my.cnf
@@ -44,3 +61,6 @@ files:
     path: /opt/ccp/bin/mariadb-security-reset.expect
     content: mariadb-security-reset.expect
     perm: "755"
+  telegraf-conf:
+    path: /etc/telegraf/telegraf.conf
+    content: telegraf.conf.j2

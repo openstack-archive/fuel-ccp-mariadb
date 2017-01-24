@@ -1,0 +1,27 @@
+[agent]
+  interval = "15s"
+  round_interval = false
+  metric_batch_size = 1000
+  metric_buffer_limit = 10000
+  collection_jitter = "2s"
+  hostname = ""
+  omit_hostname = false
+
+[[outputs.prometheus_client]]
+  listen = ":{{ telegraf.prometheus_output_port.cont }}"
+
+[[inputs.mysql]]
+  servers = ["root:{{ db.root_password }}@tcp({{ network_topology["private"]["address"] }}:{{ mariadb.port.cont }})/"]
+  table_schema_databases = []
+  gather_table_schema = true
+  gather_process_list = true
+  gather_info_schema_auto_inc = false
+  gather_slave_status = false
+  gather_binary_logs = true
+  gather_table_io_waits = true
+  gather_table_lock_waits = true
+  gather_index_io_waits = true
+  gather_event_waits = true
+  gather_file_events_stats = true
+  gather_perf_events_statements = true
+  interval_slow = "10m"
