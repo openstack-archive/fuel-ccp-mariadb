@@ -18,12 +18,15 @@ function bootstrap_db {
     echo "Running mysql grant privileges commands"
     mysql -u root --password="${DB_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}' WITH GRANT OPTION;"
     mysql -u root --password="${DB_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${DB_ROOT_PASSWORD}' WITH GRANT OPTION;"
+    echo "Add readiness user"
+    mysql -u root --password="${DB_ROOT_PASSWORD}" -e "CREATE USER 'readiness'@'%' IDENTIFIED BY '${DB_READINESS_PASSWORD}';"
     echo "Shuting down mariadb"
     mysqladmin -uroot -p"${DB_ROOT_PASSWORD}" shutdown
     wait $(jobs -p)
 }
 
 DB_ROOT_PASSWORD="{{ db.root_password }}"
+DB_READINESS_PASSWORD="{{ db.readiness_password }}"
 DB_MAX_TIMEOUT="{{ db.max_timeout }}"
 
 # Only update permissions if permissions need to be updated
