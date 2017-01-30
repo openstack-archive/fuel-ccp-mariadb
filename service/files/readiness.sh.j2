@@ -1,3 +1,7 @@
 #!/bin/bash -e
 
-test -f /tmp/mariadb_ok && nc -z {{ network_topology["private"]["address"] }} {{ mariadb.port.cont }}
+test -f /tmp/mariadb_ok && echo "status" | mysql --connect-timeout=4 \
+    -h {{ network_topology["private"]["address"] }} \
+    -P {{ mariadb.port.cont }} \
+    -u readiness \
+    -p{{ db.readiness_password }}
