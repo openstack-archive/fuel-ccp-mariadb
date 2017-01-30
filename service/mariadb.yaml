@@ -40,7 +40,6 @@ service:
       daemon:
         dependencies:
           - etcd
-          - mariadb
         command: telegraf --config /etc/telegraf/telegraf.conf --input-filter mysql
         files:
           - telegraf-conf
