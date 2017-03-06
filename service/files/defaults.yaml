@@ -1,10 +1,14 @@
 configs:
   db:
     max_timeout: 60
-    root_password: password
   mariadb:
     port:
       cont: 3306
+
+secret_configs:
+  db:
+    root_password: password
+
 url:
   mariadb:
     debian:
